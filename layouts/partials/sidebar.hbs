@@ -1,0 +1,32 @@
+<ul class="sidebar-inner">
+	{{! Site description}}
+	<li class="widget widget-html">
+		<h3 class="title">Interview.</h3>
+		<p class="widget-content">Kuta presents an AMA (Ask Me Anything) session with Justin Kan.</p>
+	</li>
+
+	{{! Networks}}
+	<li class="widget widget-banner">
+		<a class="widget-content" href=""><img src="{{asset "images/banner.jpg"}}" alt="banner"/></a>
+	</li>
+
+	{{! Flickr}}
+	<li class="widget widget-buzz">
+		<h3 class="title">Flickr.</h3>
+		<div class="widget-content clearfix" id="flickr_wrap"></div>
+	</li>
+
+	{{! Instagram}}
+	<li class="widget widget-buzz">
+		<h3 class="title">Instagram.</h3>
+		<div class="widget-content clearfix" id="instafeed"></div>
+	</li>
+
+	<li class="widget widget-newsletter">
+		<h3 class="title">Subscribe.</h3>
+		<div class="widget-content">
+			<p class="description">Get our best articles directly to your inbox. No spam, pinky swear.</p>
+			{{> mailchimp}}
+		</div>
+	</li>
+</ul>

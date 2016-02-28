@@ -1,0 +1,25 @@
+{{!< default}}
+
+{{! The big featured header }}
+{{#author}}
+<div class="clearfix hero-outer hero-archive" itemscope itemtype="http://schema.org/Person">
+	<div class="left tagline-outer clearfix" {{#if cover}}style="background-image: url({{cover}}){{else}}style="background-image: url({{@blog.cover}}){{/if}}">
+		<div class="tagline-inner">
+			<span class="label">Showing {{plural ../pagination.total empty='No posts' singular='% post' plural='% posts'}} by,</span>
+			<p class="title tagline">{{name}}</p>
+		</div>
+	</div>
+
+	<figure class="post-author-avatar" style="background-image: url({{image}})"><span class="hidden" itemprop="name">{{name}}'s Picture</span></figure>
+</div>
+{{/author}}
+
+<div class="clearfix main-outer">
+	<main class="main-inner">
+		{{> loop}}
+	</main>
+
+	<aside class="sidebar-outer">
+		{{> sidebar}}
+	</aside>
+</div>

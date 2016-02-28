@@ -1,0 +1,57 @@
+{{#post}}
+
+<table id="pagination" class="pagination-outer">
+	<tr class="pagination-inner">
+	{{#next_post}}
+	<td class="item next-post {{#if image}}" style="background-image: url({{image}}){{else}}no-cover{{/if}}">
+		<a href="{{url}}" class="post">
+			<span class="label">Newer Post</span>
+			<h3 class="title">{{title}}</h2>
+		</a>
+	</td>
+	{{/next_post}}
+	{{#prev_post}}
+	<td class="item older-post {{#if image}}" style="background-image: url({{image}}){{else}}no-cover{{/if}}">
+		<a href="{{url}}" class="post">
+			<span class="label">Older Post</span>
+			<h3 class="title">{{title}}</h2>
+		</a>
+	</td>
+	{{/prev_post}}
+	</tr>
+</table>
+
+<div class="clearfix main-outer">
+	<main class="main-inner">
+		<article class="{{post_class}} clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+			{{^is "author"}}
+			<figure class="post-author-avatar" style="background-image: url({{author.image}})"></figure>
+
+			<ul class="post-header">
+				<li class="post-author-name">{{#author}}<a class="author-name" href="{{url}}" itemprop="author">{{name}}</a>{{/author}}</li>
+				<li class="post-date" itemprop="datePublished">{{date format='MMM DD, YYYY'}}</li>
+			</ul>
+			{{/is}}
+
+			<h2 class="wrapper-m title post-title" itemprop="headline">{{title}}</h2>
+
+			{{#if image}}
+			<figure class="wrapper post-cover"><img src="{{image}}" alt="{{title}}" itemprop="image"/></figure>
+			{{/if}}
+
+			<section class="clearfix wrapper-m post-body">
+				{{content}}
+			</section>
+
+			{{> post-footer}}
+		</article>
+	</main>
+</div>
+
+<div class="comment-outer">
+	<div class="wrapper-m comment-inner">
+		{{> disqus}}
+	</div>
+</div>
+
+{{/post}}

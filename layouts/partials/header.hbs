@@ -1,0 +1,27 @@
+<div class="header-outer">
+	<div class="clearfix header-inner">
+		<header class="left header" role="banner" itemscope itemtype="http://schema.org/WPHeader">
+			<div class="header">
+				{{#if @blog.logo}}
+					<a class="title site-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="{{@blog.title}}" /></a>
+				{{else}}
+					<h1 class="title site-title">
+            <img src="{{ asset 'images/header-logo.png' }}" height=42 width=31>
+            <a title="{{@blog.title}}" href='{{@blog.url}}'>
+              {{{@blog.title}}}
+            </a>
+          </h1>
+				{{/if}}
+			</div>
+		</header>
+
+		<ul class="right socialnetwork">
+			<li class="icon-twitter"><a href="https://twitter.com/narlystack">Twitter</a></li>
+			<li class="icon-github"><a href="https://github.com/narlystack">Github</a></li>
+		</ul>
+
+		<nav class="navigation">
+			{{navigation}}
+		</nav>
+	</div>
+</div>

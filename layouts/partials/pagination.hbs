@@ -1,0 +1,15 @@
+<nav class="wrapper-m blog-pager pagination clearfix">
+	{{#if prev}}
+		<p class="left newer-posts"><a href="{{page_url prev}}">Newer Posts</a></p>
+	{{else}}
+		<p class="left no-link newer-posts">Newer Posts</p>
+	{{/if}}
+
+	{{#if next}}
+		<p class="right older-posts"><a href="{{page_url next}}">Older Posts</a></p>
+	{{else}}
+		<p class="right no-link older-posts">Older Posts</p>
+	{{/if}}
+
+	<p class="page-number">Page {{page}} of {{pages}}</p>
+</nav>

@@ -1,0 +1,21 @@
+{{!< default}}
+
+{{! The big featured header }}
+<div class="clearfix hero-outer hero-archive">
+	<div class="left tagline-outer clearfix" {{#if image}}style="background-image: url({{image}}){{else}}style="background-image: url({{@blog.cover}}){{/if}}">
+		<div class="tagline-inner">
+			<span class="label">{{plural pagination.total empty='No posts' singular='% post' plural='% posts'}} found under,</span>
+			<p class="title tagline">{{tag.name}}</p>
+		</div>
+	</div>
+</div>
+
+<div class="clearfix main-outer">
+	<main class="main-inner">
+		{{> loop}}
+	</main>
+
+	<aside class="sidebar-outer">
+		{{> sidebar}}
+	</aside>
+</div>

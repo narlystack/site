@@ -1,0 +1,25 @@
+{{! Archive loop - Home, Tag & Author templates }}
+{{#foreach posts}}
+<article class="{{post_class}} clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+	{{^is "author"}}
+	<figure class="post-author-avatar" style="background-image: url({{author.image}})"></figure>
+
+	<ul class="post-header">
+		<li class="post-author-name">{{#author}}<a class="author-name" href="{{url}}" itemprop="author">{{name}}</a>{{/author}}</li>
+		<li class="post-date" itemprop="datePublished">{{date format='MMM DD, YYYY'}}</li>
+	</ul>
+	{{/is}}
+
+	<h2 class="wrapper-m title post-title" itemprop="headline"><a rel="bookmark" href="{{{url}}}" itemprop="url">{{title}}</a></h2>
+
+	{{#if image}}
+	<figure class="wrapper post-cover"><a rel="bookmark" href="{{{url}}}" itemprop="url"><img src="{{image}}" alt="{{title}}" itemprop="image"/></a></figure>
+	{{/if}}
+
+	<div class="clearfix wrapper-m post-body">
+		<p itemprop="articleBody">{{excerpt characters="450"}} [...]</p>
+	</div>
+
+	{{> post-footer}}
+</article>
+{{/foreach}}

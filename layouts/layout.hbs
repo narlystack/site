@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{! Document Settings }}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    {{! Page Meta }}
+    <title>{{meta_title}}</title>
+    <meta name="description" content="{{meta_description}}" />
+
+    {{! Styles }}
+    <link href="{{asset "css/normalize.css"}}" rel="stylesheet"/>
+    <link href="{{asset "css/screen.css"}}" rel="stylesheet"/>
+    <link href="{{asset "css/responsive.css"}}" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Arvo:400,700%7CHind:300,400,700' rel='stylesheet' type='text/css'>
+ 
+    {{! Responsive Meta Tags }}
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {{ghost_head}}
+</head>
+
+<body class="{{#is "index"}}archive-layout{{else}}{{#is "author"}}archive-layout{{else}}{{#is "tag"}}archive-layout{{/is}}{{/is}}{{/is}} {{body_class}}" itemscope itemtype="http://schema.org/WebPage">
+    <div class="outer-wrapper">
+        {{> header}}
+
+        <div class="container">
+            {{{body}}}
+        </div>
+
+        {{> footer}}
+
+        {{ghost_foot}}
+    </div>
+
+    {{! The main JavaScript file }}
+    <script src="{{asset "js/jQuery.js"}}"></script>
+    <script src="{{asset "js/dropit.js"}}"></script>
+    <script src="{{asset "js/hidemax.js"}}"></script>
+    <script src="{{asset "js/instafeed.js"}}"></script>
+    <script src="{{asset "js/jflickrfeed.js"}}"></script>
+    <script src="{{asset "js/custom.js"}}"></script>
+
+    {{> config}}
+</body>
+</html>

@@ -1,0 +1,19 @@
+{{#get "posts" limit="4" filter="featured:true"}}
+	<div class="featuredpost-outer">
+		<div class="wrapper">
+			<p class="label"><span>You might also interested:</span></p>
+
+			<ul class="clearfix featuredpost-inner">
+			{{#foreach posts}}
+				<li class="left item">
+					{{#if image}}
+					<figure class="thumbnail" style="background-image: url({{image}})">&nbsp;</figure>
+					{{/if}}
+					<small class="post-date">{{date format='MMM DD, YYYY'}}</small>
+					<h4 class="title">{{title}}</h4>
+				</li>
+			{{/foreach}}
+			</ul>
+		</div>
+	</div>
+{{/get}}
