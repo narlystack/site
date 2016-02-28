@@ -17,9 +17,9 @@
 		</ul>
 
 		<nav class="navigation">
-			{{#pages}}
-        <a href="/">{{ title.nav }}</a>
-			{{/pages}}
+			{{#navigation}}
+        <a class="{{ class }}" href="{{ permalink }}">{{ nav }}</a>
+			{{/navigation}}
 		</nav>
 	</div>
 </div>

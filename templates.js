@@ -8,12 +8,16 @@ var path = require("path");
 var helpers = require("./helpers");
 
 var loaded = false;
-var globals = {};
+const globals = exports.globals = {};
 
 loadTemplate = _.memoize(loadTemplate);
 
-exports.setGlobals = function(to) {
-  globals = to;
+exports.global = function(k, v) {
+  if(_.isObject(k)) {
+    _.each(k, (vi, ki) => globals[ki] = vi);
+  } else {
+    globals[k] = v;
+  }
 }
 
 exports.compile = function(template, data) {
@@ -28,14 +32,14 @@ exports.compile = function(template, data) {
     throw Error(`error running template '${template}': ${e.stack}`);
   }
   
-  return withBody(content);
+  return withBody(content, data);
 }
 
-function withBody(content) {
+function withBody(content, data) {
   try {
-    return runTemplate("layout", {
+    return runTemplate("layout", _.defaults(data, {
       body: content,
-    });
+    }));
   } catch(e) {
     throw Error(`error in layout.hbs: ${e.stack}`);
   }
@@ -48,7 +52,6 @@ function runTemplate(tpl, data) {
 function loadTemplate(name) {
   return Handlebars.compile(fs.readFileSync(__dirname + "/layouts/" + name + ".hbs", { encoding: "utf8" }));
 }
-
 
 function register() {
   glob.sync(__dirname + "/layouts/partials/*.hbs").forEach((fn) => {

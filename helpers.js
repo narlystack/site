@@ -1,6 +1,8 @@
+var _ = require("lodash");
 
 var Handlebars = require('handlebars')
 var moment = require('moment')
+const template = require("./templates");
 
 const ASSET_PATH = "/";
 
@@ -13,9 +15,20 @@ module.exports = {
     return moment(date).format(options.hash.format)
   },
 
+  navigation: function (context, options) {
+    const file = context.data.root.file;
+    return _.reduce(context.data.root.pages, (s, p) => {
+      console.log(p.permalink, file.permalink);
+      return s + context.fn({
+        permalink: p.permalink,
+        nav: p.nav,
+        class: p.permalink === file.permalink ? "active" : "",
+      });
+    }, "");
+  },
+
   is: function (page) {
-    // TODO
-    return true;
+    return false;
   },
 
   isdraft: function (source) {
@@ -74,24 +87,6 @@ module.exports = {
     return new Handlebars.SafeString((options.prefix || '') + tags.map(function (tag) {
       return '<a href="' + ASSET_PATH + tag.path + '">' + tag.name + '</a>'
     }).join(options.separator || ' '))
-  },
-
-  foreach: function (context, options) {
-    var ret = ''
-    context.each(function (item) {
-      var vals = {}
-      for (var name in item) {
-        vals[name] = item[name]
-      }
-      ret += options.fn(vals)
-      // ret += options.fn(item)
-    })
-    return ret;
-    /*
-    return context.map(function (item) {
-      return options.fn(item)
-    }).join('')
-    */
   },
 
   debug: function(optionalValue) {

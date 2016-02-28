@@ -1,5 +1,5 @@
 {{! Archive loop - Home, Tag & Author templates }}
-{{#foreach posts}}
+{{#each posts}}
 <article class="{{post_class}} clearfix" itemscope itemtype="http://schema.org/BlogPosting">
 	{{^is "author"}}
 	<figure class="post-author-avatar" style="background-image: url({{author.image}})"></figure>
@@ -22,4 +22,4 @@
 
 	{{> post-footer}}
 </article>
-{{/foreach}}
+{{/each}}
