@@ -2,6 +2,8 @@
 var Handlebars = require('handlebars')
 var moment = require('moment')
 
+const ASSET_PATH = "/";
+
 module.exports = {
   date: function (date, options) {
     if (arguments.length === 1) {
@@ -26,7 +28,7 @@ module.exports = {
       return name
     }
     if (name[0] === '/') name = name.slice(1)
-    return "/assets/" + name
+    return ASSET_PATH + name
   },
 
   abs: function (name) {
@@ -34,7 +36,7 @@ module.exports = {
       return name
     }
     if (name[0] === '/') name = name.slice(1)
-    return "/assets/" + name
+    return ASSET_PATH + name
   },
 
   encode: function (item) {
@@ -70,7 +72,7 @@ module.exports = {
     options = options.hash
     if (!tags || !tags.length) return
     return new Handlebars.SafeString((options.prefix || '') + tags.map(function (tag) {
-      return '<a href="' + "/assets/" + tag.path + '">' + tag.name + '</a>'
+      return '<a href="' + ASSET_PATH + tag.path + '">' + tag.name + '</a>'
     }).join(options.separator || ' '))
   },
 

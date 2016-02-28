@@ -1,0 +1,134 @@
+@media screen and (max-width: 960px) {
+	.wrapper {
+		width: calc(100% - 120px);
+	}
+	.wrapper-m, .wrapper-s {
+		width: calc(100% - 240px );
+	}
+	.header-inner .navigation {
+		float: right;
+	}
+	.header-inner .navigation ul li {
+		margin: 0 0 0 20px;
+	}
+	.hero-outer {
+		padding-right: 0;
+	}
+	.hero-outer .newsletter-outer {
+		position: relative;
+		width: 100%;
+	}
+	.socialnetwork,
+	.blog-pager .page-number,
+	.footer-credit .back-to-top {
+		display: none;
+	}
+	.footer-credit .left,
+	.footer-credit .right {
+		float: none;
+	}
+	.pagination-outer .item .post {
+		width: calc(100% - 100px);
+	}
+	.pagination-outer .item .post {
+		padding: 50px;
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.header-outer {
+		text-align: center;
+	}
+	.header-outer .left,
+	.header-outer .right,
+	.header-inner .navigation {
+		float: none;
+	}
+	.header-inner .header {
+		margin-bottom: 30px;
+	}
+	.header-inner .header img {
+		margin: 0 auto;
+	}
+	.header-inner .navigation ul li {
+		margin: 0 10px;
+	}
+	.wrapper-m, .wrapper-s {
+		width: calc(100% - 120px);
+	}
+}
+
+@media screen and (max-width: 540px) {
+	.wrapper,
+	.wrapper-m,
+	.wrapper-s {
+		width: calc(100% - 60px);
+	}
+	.header-inner,
+	.footer-outer,
+	.footer-credit {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	.tagline-inner,
+	.newsletter-inner {
+		padding: 30px;
+	}
+	.posted-under {
+		float: left;
+	}
+	.post {
+		padding-bottom: 20px;
+	}
+	.button-action {
+		margin-bottom: 30px !important;
+	}
+	.main-outer {
+		font-size: 14px;
+		line-height: 1.6em;
+	}
+	.tagline-inner .tagline {
+		font-size: 48px;
+	}
+	.post .post-title {
+		font-size: 32px;
+	}
+	.post-body h2 {
+		font-size: 28px;
+	}
+	.post-body h3 {
+		font-size: 24px;
+	}
+	.post-body h4 {
+		font-size: 18px;
+	}
+	.post-body h5 {
+		font-size: 14px;
+	}
+	.post-body h6 {
+		font-size: 12px;
+	}
+	.blog-pager {
+		text-align: center;
+	}
+	.blog-pager .left,
+	.blog-pager .right {
+		float: none;
+	}
+	.blog-pager p {
+		margin-bottom: 30px;
+	}
+	.pagination-outer .item {
+		display: inline-block;
+		width: 100%;
+	}
+	.pagination-outer .item.next-post .post {
+		text-align: left;
+	}
+	.pagination-outer.align-center .item .post {
+		width: calc(100% - 60px);
+	}
+	.pagination-outer .item .title {
+		font-size: 20px;
+	}
+}

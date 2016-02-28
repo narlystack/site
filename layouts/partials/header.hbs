@@ -2,16 +2,12 @@
 	<div class="clearfix header-inner">
 		<header class="left header" role="banner" itemscope itemtype="http://schema.org/WPHeader">
 			<div class="header">
-				{{#if @blog.logo}}
-					<a class="title site-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="{{@blog.title}}" /></a>
-				{{else}}
-					<h1 class="title site-title">
-            <img src="{{ asset 'images/header-logo.png' }}" height=42 width=31>
-            <a title="{{@blog.title}}" href='{{@blog.url}}'>
-              {{{@blog.title}}}
-            </a>
-          </h1>
-				{{/if}}
+        <h1 class="title site-title">
+          <img src="{{ asset 'images/header-logo.png' }}" height=42 width=31>
+          <a title="{{ blog.title}}" href='{{ blog.url}}'>
+            {{ blog.title }}
+          </a>
+        </h1>
 			</div>
 		</header>
 
@@ -21,7 +17,9 @@
 		</ul>
 
 		<nav class="navigation">
-			{{navigation}}
+			{{#pages}}
+        <a href="/">{{ title.nav }}</a>
+			{{/pages}}
 		</nav>
 	</div>
 </div>

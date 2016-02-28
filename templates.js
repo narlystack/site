@@ -8,8 +8,13 @@ var path = require("path");
 var helpers = require("./helpers");
 
 var loaded = false;
+var globals = {};
 
 loadTemplate = _.memoize(loadTemplate);
+
+exports.setGlobals = function(to) {
+  globals = to;
+}
 
 exports.compile = function(template, data) {
   if(!loaded) {
@@ -18,7 +23,7 @@ exports.compile = function(template, data) {
   }
 
   try {
-    var content = loadTemplate(template)(data);
+    var content = runTemplate(template, data);
   } catch(e) {
     throw Error(`error running template '${template}': ${e.stack}`);
   }
@@ -28,12 +33,16 @@ exports.compile = function(template, data) {
 
 function withBody(content) {
   try {
-    return loadTemplate("layout")({
+    return runTemplate("layout", {
       body: content,
     });
   } catch(e) {
     throw Error(`error in layout.hbs: ${e.stack}`);
   }
+}
+
+function runTemplate(tpl, data) {
+  return loadTemplate(tpl)(_.defaults(data, globals)); 
 }
 
 function loadTemplate(name) {

@@ -1,5 +1,6 @@
 ---
-title: My First Page
+title: Node and Postgres
+nav: Postgres
 ---
 
-I am a page
+# I am a page
