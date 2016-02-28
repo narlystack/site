@@ -13,13 +13,7 @@
     "glob": "^7.0.0",
     "handlebars": "^4.0.5",
     "lodash": "^3.10.1",
-    "marked": "^0.3.5",
-    "metalsmith": "^2.1.0",
-    "metalsmith-discover-helpers": "^0.1.0",
-    "metalsmith-discover-partials": "^0.1.0",
-    "metalsmith-layouts": "^1.6.4",
-    "metalsmith-markdown": "^0.2.1",
-    "metalsmith-permalinks": "^0.5.0"
+    "marked": "^0.3.5"
   },
   "devDependencies": {
     "static-server": "^2.0.1"

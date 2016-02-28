@@ -3,151 +3,125 @@
 
 var _ = require("lodash");
 var template = require("./templates");
-var markdown = require("markdown");
+var marked = require("marked");
 var Promise = require("bluebird");
+var execSync = require("child_process").execSync;
+var glob = require("glob");
+var fs = require("fs");
+var path = require("path");
 
 
 main();
 
 function main() {
-  loadData()
-  .then(template.setGlobals)
-  .then(compilePages)
-  .then(copyAssets)
+  Promise.props({
+    pages: loadPages(),
+  })
+  .then((data) => {
+    const globals = { 
+      pages: data.pages,
+      blog: {
+        title: "Narly Stack",
+        subtitle: "NodeJS and Relational databases",
+      },
+    };
+
+    template.setGlobals(globals);
+
+    data.pages = _.map(data.pages, _.partial(compile, "page"));
+
+    return write(data.pages);
+  })
   .then(() => console.log("built"), (e) => console.error(e.stack))
 }
 
-function compilePages() {
-  return Promise.fromCallback((cb) => {
-    loadPages()
-      .destination(__dirname + '/build')
-      .use(markdown({
-        "smartypants": true,
-        "gfm": true,
-        "tables": true,
-      }))
-      .use(_.partial(compile, "page"))
-      .build(cb)
-  });
-}
-
 function loadPages() {
-  return Metalsmith(__dirname)  
-    .source("pages")
-    .clean(false)
-    .use(markdownOnly)
-    .use(permalinks("/:title"))
+  const pages = load("pages/*.md");
+  _.each(pages, all(readMetadata, markdown, _.partial(permalink, "/:title")));
+  return pages; 
 }
 
-function loadData() {
-  const globals = {
-    blog: {
-      title: "Narly Stack",
-      subtitle: "NodeJS and Relational databases",
-    },
-  };
-
-  const pages = Promise.fromCallback((cb) => {
-    const chain = loadPages();
-
-    chain
-      .read((err, files) => {
-        cb(err, { files, chain });
-      })
-
-  }).then(function(result) {
-    return Promise.fromCallback((cb) => {
-      result.chain.run(result.files, cb);
-    });
-  })
-
-  return pages.then((allPages) => {
-    console.log(allPages);
-    
-    globals.pages = _.values(allPages);
-    return globals;
+function write(files) {
+  _.each(files, function(file) {
+    const fn = __dirname + "/build/" + file.path;
+    execSync(`mkdir -p '${path.dirname(fn)}'`);
+    fs.writeFileSync(fn, file.content);
   });
 }
 
-function permalinks(pattern) {
-  return function(files, _ms, cb) {
-    _.each(files, function(file, name) {
-      const permalink = pattern.replace(/:(\w+)/g, (_a, key) => {
-        if(!(key in file)) {
-          throw Error(`missing ${key} in file`);
-        }
-        return slugify(file[key]);
-      });
+function all() {
+  const fns = arguments;
+  return function(item) {
+    _.each(fns, (f) => f(item))
+  }
+}
 
-      file.permalink = permalink;
-      replaceKey(files, name, permalink.replace(/^\//, "") + "/index.html");
+function markdown(file) {
+  file.content = compileMarkdown(file.content); 
+}
+
+function compileMarkdown(md) {
+  return marked(md, {
+    "smartypants": true,
+    "gfm": true,
+    "tables": true,
+  });
+}
+
+function readMetadata(file) {
+  const index = file.content.search(/^---/m);
+  
+  if(index === -1 ) {
+    return file;
+  }
+  const meta = file.content.slice(0, index - 1);
+  file.content = file.content.slice(index + 4);
+  const parsed = JSON.parse("{" + meta  + "}");
+  _.defaults(file, parsed);
+  return file;
+}
+
+function compile(tpl, file) {
+  try {
+    file.content = template.compile(tpl, {
+      title: file.title,
+      content: file.content,
     });
 
-    cb();
+    return file;
+
+  } catch(e) {
+    throw Error(`failed on ${file.sourceFile}: ${e.stack}`);
   }
+}
+
+function copyAssets() {
+  exec("rsync -a assets/* build");
+}
+
+function load(path) {
+  return glob.sync(path).map(function(fn) {
+    return {
+      path: fn,
+      sourceFile: fn,
+      content: fs.readFileSync(fn, { encoding: "utf8" }).toString(),
+    };
+  });
+}
+
+function permalink(pattern, file) {
+  const permalink = pattern.replace(/:(\w+)/g, (_a, key) => {
+    if(!(key in file)) {
+      throw Error(`missing ${key} in file`);
+    }
+    return slugify(file[key]);
+  });
+
+  file.permalink = permalink;
+  file.path = permalink.replace(/^\//, "") + "/index.html";
 
   function slugify(s) {
     return s.toLowerCase().replace(/[^\w]+/g, " ").replace(/\s+/g, "-");
   }
 }
 
-function replaceKey(o, k, other) {
-  const v= o[k];
-  delete o[k];
-  o[other] = v;
-  return o; 
-}
-
-function promisify(cb) {
-  var resolve;
-  var reject;
-  var p = new Promise(function(y, n) {
-    resolve = y, reject = n;
-  });
-  return p;
-}
-
-function failOnError(err) {
-  if(err) throw err;
-}
-
-function compile(tpl, files) {
-  _.each(files, function(file, name) {
-    try {
-      file.contents = template.compile(tpl, {
-        title: file.title,
-        content: file.contents,
-      });
-    } catch(e) {
-      throw Error(`failed on ${name}: ${e.stack}`);
-    }
-  })
-}
-
-function copyAssets() {
-  return Promise.fromCallback((cb) => {
-    Metalsmith(__dirname)
-    .clean(false)
-    .source("assets")
-    .destination("build")
-    .build(cb)
-  });
-}
-
-function markdownOnly(files, ms, cb) {
-  _.forOwn(files, function(v, fn) {
-    if(!/\.md$/.test(fn)) {
-      delete files[fn];
-    }
-  });
-  cb();
-}
-
-function tapMiddleware(files, metalsmith, cb) {
-  console.log(files);
-  cb();
-}
-
-function load() {
-  
-}

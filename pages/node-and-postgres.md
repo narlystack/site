@@ -1,6 +1,5 @@
----
-title: Node and Postgres
-nav: Postgres
+"title": "Node and Postgres",
+"nav": "Postgres"
 ---
 
 # I am a page
