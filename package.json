@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "scripts": {
+    "build": "node index",
+    "start": "static-server build"
+  },
   "dependencies": {
     "bluebird": "^3.3.3",
     "glob": "^7.0.0",
