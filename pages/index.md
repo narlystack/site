@@ -1,7 +1,8 @@
-"title": "Node and Postgres",
+"title": "Node and Postgres index",
 "nav": "Home",
 "permalink": "/",
-"template": "index"
----
+"template": "index",
+"cover": "/images/cover.jpg"
+----------------------------
 
 # Welcome

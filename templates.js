@@ -18,7 +18,7 @@ exports.global = function(k, v) {
   } else {
     globals[k] = v;
   }
-}
+};
 
 exports.compile = function(template, data) {
   if(!loaded) {
@@ -33,12 +33,12 @@ exports.compile = function(template, data) {
   }
   
   return withBody(content, data);
-}
+};
 
 function withBody(content, data) {
   try {
     return runTemplate("layout", _.defaults(data, {
-      body: content,
+      body: content
     }));
   } catch(e) {
     throw Error(`error in layout.hbs: ${e.stack}`);

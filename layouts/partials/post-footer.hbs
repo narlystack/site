@@ -25,13 +25,13 @@
 	<ul class="button-action posted-under">
 		<li class="option-box">
 			<a class="selector" href="#">Tags ...</a>
-			{{#if tags}}
+			{{#if tags }}
 				<ul class="option-list">
-				{{#foreach tags}}
+				{{#each tags}}
 					<li>
-						<a href="{{url}}" title="{{name}}" class="tag-{{id}}">{{name}}</a>
+                        {{ tag_anchor }}
 					</li>  
-				{{/foreach}}
+				{{/each}}
 				</ul>
 			{{/if}}
 		</li>

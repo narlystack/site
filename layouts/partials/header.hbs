@@ -2,12 +2,12 @@
 	<div class="clearfix header-inner">
 		<header class="left header" role="banner" itemscope itemtype="http://schema.org/WPHeader">
 			<div class="header">
-        <h1 class="title site-title">
-          <img src="{{ asset 'images/header-logo.png' }}" height=42 width=31>
-          <a title="{{ blog.title}}" href='{{ blog.url}}'>
-            {{ blog.title }}
-          </a>
-        </h1>
+                <h1 class="title site-title">
+                  <img src="{{ asset 'images/header-logo.png' }}" height=42 width=31>
+                  <a title="{{ blogTitle}}" href='{{ blogUrl}}'>
+                    {{ blogTitle }}
+                  </a>
+                </h1>
 			</div>
 		</header>
 
@@ -17,9 +17,13 @@
 		</ul>
 
 		<nav class="navigation">
-			{{#navigation}}
-        <a class="{{ class }}" href="{{ permalink }}">{{ nav }}</a>
-			{{/navigation}}
+            <ul class="nav">
+                {{#navigation}}
+                    <li class="{{ class }}" role="presentation">
+                        <a href="{{ permalink }}">{{ nav }}</a>
+                    </li>
+                {{/navigation}}
+            </ul>
 		</nav>
 	</div>
 </div>

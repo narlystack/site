@@ -1,94 +1,85 @@
 var _ = require("lodash");
 
-var Handlebars = require('handlebars')
-var moment = require('moment')
+var Handlebars = require('handlebars');
+var moment = require('moment');
 const template = require("./templates");
 
 const ASSET_PATH = "/";
 
 module.exports = {
-  date: function (date, options) {
+  //helper for formatting data for posts
+  formatDate: function (date, options) {
     if (arguments.length === 1) {
-      options = date
+      options = date;
       date = Date.now()
     }
     return moment(date).format(options.hash.format)
   },
 
+  //helper for returning navigations for page
   navigation: function (context, options) {
     const file = context.data.root.file;
-    return _.reduce(context.data.root.pages, (s, p) => {
-      console.log(p.permalink, file.permalink);
+    return _.reduce(this.pages, (s, p) => {
       return s + context.fn({
         permalink: p.permalink,
         nav: p.nav,
-        class: p.permalink === file.permalink ? "active" : "",
+        class: p.permalink === file.permalink ? "nav-current" : ""
       });
     }, "");
   },
 
-  is: function (page) {
-    return false;
+  is: function (context) {
+    return ;
   },
 
-  isdraft: function (source) {
-    return source.indexOf('_drafts/') === 0
-  },
-
+  //helper for returning path to asset
   asset: function (name) {
     name = name || "";
     if (name.slice(0, 2) === '//' || ['http:/', 'https:'].indexOf(name.slice(0, 6)) !== -1) {
       return name
     }
-    if (name[0] === '/') name = name.slice(1)
-    return ASSET_PATH + name
+    if (name[0] === '/') name = name.slice(1);
+    return ASSET_PATH + name;
+
   },
 
-  abs: function (name) {
-    if (name.slice(0, 2) === '//' || ['http:/', 'https:'].indexOf(name.slice(0, 6)) !== -1) {
-      return name
-    }
-    if (name[0] === '/') name = name.slice(1)
-    return ASSET_PATH + name
+  //helper for limit of posts content
+  substr: function (value, options) {
+    var opts = options.hash;
+    var start = opts.start || 0;
+    var len = opts.max;
+    var out = value.substr(start,len);
+    if (value.length > len) out+="  [ ... ]";
+    return new Handlebars.SafeString(out);
   },
 
-  encode: function (item) {
-    return new Handlebars.SafeString(encodeURIComponent(item))
-  },
-
-  excerpt: function () {
-    return new Handlebars.SafeString(this.excerpt)
-  },
-
+  //helper for returning absolut or local url
   url: function (options) {
     if (options.hash.absolute) {
       return this.url
     }
-    return this.path
+    //console.log("this path = "+this.path);
+    return ASSET_PATH+this.path
   },
 
-  get_title: function (page) {
-    if (page.title) {
-      return page.title + ' | Jared Forsyth.com'
-    }
-    if (page.tag) {
-      return page.tag + ' | Jared Forsyth.com'
-    }
-    return 'Jared Forsyth.com'
+  //helper for returning tag info
+  plural: function(){
+    var name = Handlebars.escapeExpression(this.name);
+    var number = Handlebars.escapeExpression(this.number);
+    if (number == 1){
+      return "1 post"
+    } else if(number){return number+" posts"}
+    else return "No posts"
   },
 
-  tags: function (tags, options) {
-    if (arguments.length === 1) {
-      options = tags
-      tags = this.tags
-    }
-    options = options.hash
-    if (!tags || !tags.length) return
-    return new Handlebars.SafeString((options.prefix || '') + tags.map(function (tag) {
-      return '<a href="' + ASSET_PATH + tag.path + '">' + tag.name + '</a>'
-    }).join(options.separator || ' '))
+  //helper for formatting tags list after post
+  tag_anchor: function(){
+    var name = Handlebars.escapeExpression(this.name);
+    var tagPath= ASSET_PATH + "tags/"+name;
+    return new Handlebars.SafeString('<\a href=\"'+tagPath+'\" title=\"'+name+'\" class=\"tag-'+name+'\">'+name.toUpperCase()+'</a>')
   },
 
+  //debug helper
   debug: function(optionalValue) {
     console.log("Current Context");
     console.log("====================");
